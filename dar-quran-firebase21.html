@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دار القرآن الكريم</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#18150f;--ink2:#3a3628;--ink3:#6b6555;--ink4:#a89f8c;
+  --bg:#f9f6ef;--bg2:#f2ede1;--bg3:#e8e0cc;
+  --green:#1b5e3b;--green2:#2d7a52;--green3:#45a070;--green-soft:#eaf5ef;
+  --gold:#b07d1a;--gold2:#d4a030;--gold3:#f0c84a;--gold-soft:#fdf8e8;
+  --ruby:#8b1e1e;--ruby-soft:#fdf0f0;
+  --sky:#1a5c8b;--sky-soft:#e8f4fc;
+  --purple:#5b1ea8;--purple-soft:#f0eaff;
+  --border:rgba(24,21,15,.1);--border2:rgba(24,21,15,.06);
+  --sh:0 2px 12px rgba(24,21,15,.08);--sh3:0 12px 48px rgba(24,21,15,.16);
+  --r:14px;--rs:10px;--rxs:7px
+}
+html{font-size:16px}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+
+.scr{display:none;min-height:100vh;flex-direction:column}
+.scr.on{display:flex}
+.scr.center{align-items:center;justify-content:center}
+
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.anim{animation:up .4s ease both}
+.anim2{animation:up .4s .08s ease both}
+.anim3{animation:up .4s .16s ease both}
+
+/* ── LOADING ── */
+#s-loading{background:var(--green);align-items:center;justify-content:center}
+.loader-wrap{text-align:center;color:#fff}
+.loader-icon{font-family:'Amiri Quran',serif;font-size:64px;color:var(--gold3);margin-bottom:20px;animation:up .6s ease}
+.loader-title{font-size:22px;font-weight:800;margin-bottom:8px}
+.loader-sub{font-size:13px;opacity:.7;margin-bottom:24px}
+.spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── LOGIN ── */
+#s-login{
+  background:linear-gradient(145deg,var(--green) 0%,#0f3d25 60%,#0a2a18 100%);
+  position:relative;overflow:hidden
+}
+#s-login::before{
+  content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(0deg,transparent,transparent 49px,rgba(255,255,255,.025) 49px,rgba(255,255,255,.025) 50px),
+  repeating-linear-gradient(90deg,transparent,transparent 49px,rgba(255,255,255,.025) 49px,rgba(255,255,255,.025) 50px);
+}
+#s-login::after{
+  content:'﴿';font-family:'Amiri Quran',serif;font-size:340px;color:rgba(255,255,255,.025);
+  position:absolute;bottom:-60px;left:-40px;pointer-events:none;line-height:1
+}
+.login-wrap{
+  background:var(--bg);border-radius:22px;padding:44px 40px;width:100%;max-width:420px;
+  box-shadow:var(--sh3);position:relative;z-index:1;animation:pop .45s ease;margin:16px
+}
+.login-emblem{text-align:center;margin-bottom:26px}
+.emblem-icon{
+  width:70px;height:70px;background:var(--green);border-radius:18px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:'Amiri Quran',serif;font-size:30px;color:var(--gold3);
+  box-shadow:0 4px 18px rgba(27,94,59,.35);margin-bottom:12px
+}
+.login-emblem h1{font-size:19px;font-weight:900;color:var(--green)}
+.login-emblem p{font-size:12px;color:var(--ink3);margin-top:3px}
+.role-tabs{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:4px;
+  background:var(--bg2);border-radius:var(--rs);padding:4px;margin-bottom:20px
+}
+.rtab{
+  padding:9px 4px;border:none;border-radius:8px;cursor:pointer;
+  font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;
+  background:transparent;color:var(--ink3);transition:all .2s
+}
+.rtab.on{background:var(--green);color:#fff;box-shadow:var(--sh)}
+.frm-group{margin-bottom:13px}
+.frm-label{display:block;font-size:12px;font-weight:700;color:var(--ink3);margin-bottom:5px}
+.frm-input{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--rs);
+  font-family:'Tajawal',sans-serif;font-size:14px;color:var(--ink);
+  background:#fff;outline:none;transition:border-color .2s
+}
+.frm-input:focus{border-color:var(--green3)}
+.btn-login{
+  width:100%;padding:13px;background:var(--green);color:#fff;border:none;
+  border-radius:var(--rs);font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;
+  cursor:pointer;transition:all .2s;margin-top:6px
+}
+.btn-login:hover{background:var(--green2);transform:translateY(-1px)}
+.login-hint{text-align:center;font-size:11px;color:var(--ink4);margin-top:10px}
+.login-err{
+  background:var(--ruby-soft);border:1px solid rgba(139,30,30,.2);border-radius:var(--rs);
+  padding:9px 12px;font-size:13px;color:var(--ruby);margin-bottom:12px;display:none
+}
+
+/* ── TOPBAR ── */
+.topbar{height:58px;display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;position:sticky;top:0;z-index:50}
+.topbar.dark{background:var(--ink);color:#fff}
+.topbar.green{background:var(--green);color:#fff}
+.tb-logo{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Amiri Quran',serif;font-size:17px;flex-shrink:0}
+.topbar.dark .tb-logo{background:var(--green);color:var(--gold3)}
+.topbar.green .tb-logo{background:rgba(255,255,255,.15);color:var(--gold3)}
+.tb-title{font-size:15px;font-weight:800;flex:1}
+.tb-sub{font-size:11px;opacity:.65}
+.tb-tabs{display:flex;gap:2px;overflow-x:auto}
+.tb-tab{padding:7px 13px;border-radius:20px;border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);transition:all .2s;white-space:nowrap}
+.tb-tab.on{background:var(--green);color:#fff}
+.tb-tab:hover:not(.on){background:rgba(255,255,255,.15);color:#fff}
+.btn-out{background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.8);padding:6px 12px;border-radius:20px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-out:hover{background:rgba(255,255,255,.2)}
+
+/* ── MOB NAV ── */
+.mob-nav{display:none;background:var(--ink);border-top:1px solid rgba(255,255,255,.08);padding:6px 0 2px;flex-shrink:0;order:99}
+.mob-nav button{flex:1;background:none;border:none;color:rgba(255,255,255,.45);font-family:'Tajawal',sans-serif;font-size:11px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px}
+.mob-nav button.on{color:var(--gold3)}
+.mob-nav button span:first-child{font-size:19px}
+@media(max-width:700px){.tb-tabs{display:none}.mob-nav{display:flex}.body{padding:14px}}
+
+/* ── BODY ── */
+.body{flex:1;padding:22px;max-width:1100px;margin:0 auto;width:100%}
+
+/* ── PAGES ── */
+.pg{display:none}
+.pg.on{display:block}
+
+/* ── CARDS ── */
+.card{background:#fff;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);overflow:hidden;margin-bottom:18px}
+.card-h{padding:14px 18px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.card-t{font-size:15px;font-weight:700;color:var(--green);display:flex;align-items:center;gap:8px}
+.card-t::before{content:'';display:block;width:3px;height:18px;background:var(--gold2);border-radius:2px;flex-shrink:0}
+.card-b{padding:18px}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:#fff;border-radius:var(--r);border:1px solid var(--border);padding:16px;text-align:center;box-shadow:var(--sh)}
+.stat-n{font-size:28px;font-weight:900;color:var(--green);line-height:1;margin-bottom:5px}
+.stat-l{font-size:12px;color:var(--ink3);font-weight:500}
+.stat.gold .stat-n{color:var(--gold)}
+.stat.ruby .stat-n{color:var(--ruby)}
+.stat.sky .stat-n{color:var(--sky)}
+.stat.purple .stat-n{color:var(--purple)}
+
+/* ── GRID ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:700px){.g2{grid-template-columns:1fr}}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.b-green{background:var(--green-soft);color:var(--green)}
+.b-gold{background:var(--gold-soft);color:var(--gold)}
+.b-ruby{background:var(--ruby-soft);color:var(--ruby)}
+.b-sky{background:var(--sky-soft);color:var(--sky)}
+.b-purple{background:var(--purple-soft);color:var(--purple)}
+.b-gray{background:var(--bg2);color:var(--ink3)}
+.b-orange{background:#fff3e8;color:#b05a10}
+
+/* ── BTNS ── */
+.btn{padding:9px 18px;border-radius:var(--rs);border:none;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-g{background:var(--green);color:#fff}
+.btn-g:hover{background:var(--green2)}
+.btn-gold{background:var(--gold2);color:#fff}
+.btn-gold:hover{background:var(--gold)}
+.btn-o{background:transparent;border:1.5px solid var(--border);color:var(--ink2)}
+.btn-o:hover{background:var(--bg2)}
+.btn-r{background:var(--ruby-soft);color:var(--ruby);border:1.5px solid rgba(139,30,30,.15)}
+.btn-r:hover{background:#fad9d9}
+.btn-s{padding:6px 12px;font-size:13px;border-radius:var(--rxs)}
+.btn-wa{background:#1fbb58;color:#fff}
+.btn-ai{background:linear-gradient(135deg,#4a1c8a,#7c3aed);color:#fff}
+
+/* ── FORM ── */
+.f-group{margin-bottom:14px}
+.f-label{display:block;font-size:12px;font-weight:700;color:var(--ink3);margin-bottom:5px}
+.f-input,.f-sel,.f-ta{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--rs);font-family:'Tajawal',sans-serif;font-size:14px;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.f-input:focus,.f-sel:focus,.f-ta:focus{border-color:var(--green3);background:#fff}
+.f-ta{resize:vertical;min-height:72px;line-height:1.7}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:500px){.f-row{grid-template-columns:1fr}}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--bg2);color:var(--green);padding:10px 14px;text-align:right;font-size:12px;font-weight:700;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border2);transition:background .15s}
+tbody tr:hover{background:#fafaf6}
+tbody td{padding:10px 14px;vertical-align:middle}
+
+/* ── AVATAR ── */
+.av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;background:var(--green);color:#fff}
+.av-md{width:38px;height:38px;font-size:14px}
+.av-sm{width:30px;height:30px;font-size:12px}
+
+/* ── LIST ITEM ── */
+.li{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border2)}
+.li:last-child{border-bottom:none}
+.li-info h4{font-size:14px;font-weight:700;margin-bottom:2px}
+.li-info p{font-size:12px;color:var(--ink3)}
+.li-end{margin-right:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+
+/* ── PROGRESS ── */
+.prog{height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-top:5px}
+.prog-f{height:100%;background:linear-gradient(90deg,var(--green3),var(--green));border-radius:3px;transition:width .5s}
+
+/* ── ATTENDANCE ── */
+.att-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.att-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--rs);padding:10px 12px;display:flex;align-items:center;gap:10px}
+.att-name{flex:1;font-size:13px;font-weight:600;line-height:1.3}
+.att-name small{font-size:11px;color:var(--ink3);font-weight:400;display:block}
+.att-btns{display:flex;border-radius:7px;overflow:hidden;border:1.5px solid var(--border)}
+.att-btns button{padding:6px 11px;border:none;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:var(--ink3);transition:all .15s}
+.att-btns button.pr{background:#d1fae5;color:#065f46}
+.att-btns button.ab{background:#fee2e2;color:#991b1b}
+
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px}
+.modal-bg.off{display:none}
+.modal{background:#fff;border-radius:20px;padding:26px;width:100%;max-width:500px;box-shadow:var(--sh3);animation:pop .3s ease;max-height:90vh;overflow-y:auto}
+.modal h2{font-size:17px;font-weight:800;color:var(--green);margin-bottom:18px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(70px);background:var(--ink);color:#fff;padding:11px 26px;border-radius:40px;font-size:14px;font-weight:600;box-shadow:var(--sh3);z-index:9999;transition:transform .3s;white-space:nowrap}
+.toast.on{transform:translateX(-50%) translateY(0)}
+
+/* ── GREETING ── */
+.greeting{background:var(--green);border-radius:var(--r);padding:18px 22px;color:#fff;margin-bottom:18px;display:flex;align-items:center;gap:16px}
+.greeting-orn{font-family:'Amiri Quran',serif;font-size:34px;opacity:.8}
+.greeting h2{font-size:17px;font-weight:800;margin-bottom:3px}
+.greeting p{font-size:12px;opacity:.75}
+
+/* ── POINTS ── */
+.pts-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,var(--gold-soft),#fff8e0);border:1.5px solid var(--gold2);border-radius:20px;padding:3px 10px;font-size:12px;font-weight:700;color:var(--gold)}
+
+/* ── AI BOX ── */
+.ai-box{background:linear-gradient(135deg,#f5f0ff,#ede8ff);border:1.5px solid #c4b5fd;border-radius:var(--rs);padding:12px 14px;margin-top:10px;font-size:13px;color:#4c1d95;line-height:1.7}
+.ai-box-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;font-size:12px;font-weight:700;color:#5b21b6}
+
+/* ── ABSENCE ALERT ── */
+.abs-alert{background:linear-gradient(135deg,#fff8e8,#fff3d8);border:1.5px solid var(--gold2);border-radius:var(--rs);padding:12px 16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.abs-alert h4{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:3px}
+.abs-alert p{font-size:12px;color:var(--ink3)}
+
+/* ── STUDENT PORTAL ── */
+.portal-card{background:#fff;border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--sh);margin-bottom:16px;overflow:hidden}
+.portal-card-h{padding:14px 18px;border-bottom:1px solid var(--border2);background:var(--green-soft)}
+.portal-card-h h3{font-size:15px;font-weight:700;color:var(--green)}
+.portal-card-b{padding:16px 18px}
+.homework-item{padding:12px;border-radius:var(--rs);border:1.5px solid var(--border);margin-bottom:10px;background:var(--bg)}
+.homework-item h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.homework-item p{font-size:13px;color:var(--ink2);line-height:1.7}
+.homework-item .meta{font-size:11px;color:var(--ink3);margin-top:6px;display:flex;gap:10px}
+.note-item{padding:12px;border-right:3px solid var(--green);background:var(--green-soft);border-radius:0 var(--rs) var(--rs) 0;margin-bottom:10px}
+.note-item p{font-size:13px;color:var(--ink2);line-height:1.7}
+.note-item .meta{font-size:11px;color:var(--ink3);margin-top:5px}
+.alert-item{padding:12px;border-right:3px solid var(--ruby);background:var(--ruby-soft);border-radius:0 var(--rs) var(--rs) 0;margin-bottom:10px}
+.alert-item p{font-size:13px;color:var(--ink2);line-height:1.7}
+.orn{text-align:center;font-family:'Amiri Quran',serif;font-size:13px;color:var(--gold2);opacity:.6;letter-spacing:6px;margin:4px 0 16px}
+
+/* ── SYNC STATUS ── */
+.sync-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block;margin-left:6px}
+.sync-dot.off{background:#f87171}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="s-loading" class="scr on">
+  <div class="loader-wrap">
+    <div class="loader-icon">ق</div>
+    <div class="loader-title">دار القرآن الكريم</div>
+    <div class="loader-sub">جاري تحميل البيانات...</div>
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="s-login" class="scr center">
+  <div class="login-wrap">
+    <div class="login-emblem">
+      <div class="emblem-icon">ق</div>
+      <h1>دار القرآن الكريم</h1>
+      <p>نظام إدارة الحفظ والحضور</p>
+    </div>
+    <div class="role-tabs">
+      <button class="rtab" onclick="setRole('admin')">🛡 مشرف</button>
+      <button class="rtab" onclick="setRole('teacher')">👨‍🏫 معلم</button>
+      <button class="rtab on" onclick="setRole('student')">🎓 طالب</button>
+    </div>
+
+    <!-- مشرف -->
+    <div id="lf-admin" style="display:none">
+      <div class="frm-group">
+        <label class="frm-label">اسم المشرف</label>
+        <select class="frm-input" id="l-admin-sel">
+          <option value="">— اختر —</option>
+          <option value="sup1">الشيخ قتيبة ربابعة</option>
+          <option value="sup2">الشيخ معاوية ربابعة</option>
+        </select>
+      </div>
+      <div class="frm-group">
+        <label class="frm-label">كلمة المرور</label>
+        <input type="password" class="frm-input" id="l-admin-pass" placeholder="كلمة المرور" />
+      </div>
+    </div>
+
+    <!-- معلم -->
+    <div id="lf-teacher" style="display:none">
+      <div class="frm-group">
+        <label class="frm-label">اسم المعلم</label>
+        <select class="frm-input" id="l-teacher-sel"><option value="">— اختر —</option></select>
+      </div>
+      <div class="frm-group">
+        <label class="frm-label">كلمة المرور</label>
+        <input type="password" class="frm-input" id="l-teacher-pass" placeholder="كلمة المرور" />
+      </div>
+    </div>
+
+    <!-- طالب -->
+    <div id="lf-student">
+      <div class="frm-group">
+        <label class="frm-label">الاسم الكامل</label>
+        <input class="frm-input" id="l-student-name" placeholder="أدخل اسمك كاملاً" />
+      </div>
+      <div class="frm-group">
+        <label class="frm-label">كلمة المرور</label>
+        <input type="password" class="frm-input" id="l-student-pass" placeholder="كلمة مرورك" />
+      </div>
+      <div style="text-align:center;margin-top:4px">
+        <button type="button" style="background:none;border:none;color:var(--green);font-family:Tajawal,sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-decoration:underline" onclick="showScr('register')">
+          📝 تسجيل حساب جديد
+        </button>
+      </div>
+    </div>
+
+    <div class="login-err" id="login-err"></div>
+    <button class="btn-login" onclick="doLogin()">دخول ←</button>
+    <p class="login-hint">اختر دورك ثم أدخل بياناتك</p>
+  </div>
+</div>
+
+<!-- REGISTER SCREEN -->
+<div id="s-register" class="scr center" style="background:linear-gradient(145deg,var(--green) 0%,#0f3d25 60%,#0a2a18 100%)">
+  <div class="login-wrap">
+    <div class="login-emblem">
+      <div class="emblem-icon">ق</div>
+      <h1>تسجيل حساب جديد</h1>
+      <p>دار القرآن الكريم</p>
+    </div>
+    <div class="frm-group">
+      <label class="frm-label">الاسم الكامل *</label>
+      <input class="frm-input" id="reg-name" placeholder="أدخل اسمك الكامل" />
+    </div>
+    <div class="frm-group">
+      <label class="frm-label">كلمة المرور *</label>
+      <input type="password" class="frm-input" id="reg-pass" placeholder="اختر كلمة مرور" />
+    </div>
+    <div class="frm-group">
+      <label class="frm-label">تأكيد كلمة المرور *</label>
+      <input type="password" class="frm-input" id="reg-pass2" placeholder="أعد كتابة كلمة المرور" />
+    </div>
+    <div class="frm-group">
+      <label class="frm-label">رقم هاتف ولي الأمر (اختياري)</label>
+      <input class="frm-input" id="reg-phone" placeholder="07xxxxxxxx" />
+    </div>
+    <div class="login-err" id="reg-err"></div>
+    <button class="btn-login" onclick="doRegister()">إرسال طلب التسجيل 📨</button>
+    <div style="text-align:center;margin-top:12px">
+      <button type="button" style="background:none;border:none;color:rgba(255,255,255,.6);font-family:Tajawal,sans-serif;font-size:13px;cursor:pointer" onclick="showScr('login')">
+        ← رجوع لتسجيل الدخول
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADMIN SCREEN ═══ -->
+<div id="s-admin" class="scr">
+  <div class="topbar dark">
+    <div class="tb-logo">ق</div>
+    <div>
+      <div class="tb-title">دار القرآن الكريم <span class="sync-dot" id="sync-dot-a"></span></div>
+      <div class="tb-sub" id="admin-sub">لوحة المشرف</div>
+    </div>
+    <div class="tb-tabs">
+      <button class="tb-tab on" onclick="aTab('overview')">الرئيسية</button>
+      <button class="tb-tab" onclick="aTab('students')">الطلاب</button>
+      <button class="tb-tab" onclick="aTab('teachers')">المعلمون</button>
+      <button class="tb-tab" onclick="aTab('halaqas')">الحلقات</button>
+      <button class="tb-tab" onclick="aTab('homework')">الواجبات</button>
+      <button class="tb-tab" onclick="aTab('attendance')">الحضور</button>
+      <button class="tb-tab" onclick="aTab('reports')">التقارير</button>
+      <button class="tb-tab" onclick="aTab('requests')">🔔 الطلبات <span id="req-badge" style="background:var(--ruby);color:#fff;border-radius:10px;padding:1px 6px;font-size:11px;display:none"></span></button>
+    </div>
+    <button class="btn-out" onclick="doLogout()">خروج</button>
+  </div>
+  <div class="mob-nav">
+    <button class="on" onclick="aTab('overview')"><span>🏠</span><span>الرئيسية</span></button>
+    <button onclick="aTab('students')"><span>👥</span><span>الطلاب</span></button>
+    <button onclick="aTab('homework')"><span>📋</span><span>الواجبات</span></button>
+    <button onclick="aTab('attendance')"><span>✅</span><span>الحضور</span></button>
+    <button onclick="aTab('reports')"><span>📊</span><span>تقارير</span></button>
+  </div>
+  <div class="body">
+
+    <div id="a-overview" class="pg on">
+      <div class="greeting anim">
+        <div class="greeting-orn">﴿</div>
+        <div><h2 id="admin-greeting">مرحباً</h2><p id="admin-date-sub">—</p></div>
+      </div>
+      <div class="stats anim2" id="a-stats"></div>
+      <div class="g2">
+        <div class="card anim3">
+          <div class="card-h"><div class="card-t">⚠️ تنبيهات الغياب</div><span class="badge b-ruby" id="a-abs-cnt">0</span></div>
+          <div class="card-b" id="a-abs-list"></div>
+        </div>
+        <div class="card anim3" id="overview-requests-card" style="display:none">
+          <div class="card-h"><div class="card-t">🔔 طلبات تسجيل جديدة</div><span class="badge b-ruby" id="ov-req-cnt">0</span></div>
+          <div class="card-b" id="ov-req-list"></div>
+        </div>
+        <div class="card anim3">
+          <div class="card-h"><div class="card-t">📋 آخر الواجبات</div></div>
+          <div class="card-b" id="a-hw-recent"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="a-students" class="pg">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="font-size:17px;font-weight:800;color:var(--green)">👥 الطلاب</h2>
+        <button class="btn btn-gold btn-s" onclick="showM('m-add-student')">+ إضافة طالب</button>
+      </div>
+      <div class="card">
+        <div class="card-h">
+          <div class="card-t">قائمة الطلاب</div>
+          <input type="text" id="s-search" class="f-input" style="width:180px;padding:7px 12px;font-size:13px" placeholder="🔍 بحث..." oninput="renderStudentsTable()" />
+        </div>
+        <div class="card-b" style="padding:0"><div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>الطالب</th><th>الحلقة</th><th>المعلم</th><th>النقاط</th><th>الحضور</th><th>تواصل</th><th>إجراء</th></tr></thead>
+            <tbody id="a-students-tbody"></tbody>
+          </table>
+        </div></div>
+      </div>
+    </div>
+
+    <div id="a-teachers" class="pg">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="font-size:17px;font-weight:800;color:var(--green)">👨‍🏫 المعلمون</h2>
+        <button class="btn btn-gold btn-s" onclick="showM('m-add-teacher')">+ إضافة معلم</button>
+      </div>
+      <div class="card"><div class="card-b" id="a-teachers-list"></div></div>
+    </div>
+
+    <div id="a-halaqas" class="pg">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="font-size:17px;font-weight:800;color:var(--green)">📚 الحلقات</h2>
+        <button class="btn btn-gold btn-s" onclick="showM('m-add-halaqa')">+ إضافة حلقة</button>
+      </div>
+      <div class="card"><div class="card-b" id="a-halaqas-list"></div></div>
+    </div>
+
+    <div id="a-homework" class="pg">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="font-size:17px;font-weight:800;color:var(--green)">📋 الواجبات والملاحظات</h2>
+        <button class="btn btn-gold btn-s" onclick="showM('m-add-hw')">+ إضافة</button>
+      </div>
+      <div class="card"><div class="card-b" id="a-homework-list"></div></div>
+    </div>
+
+    <div id="a-attendance" class="pg">
+      <div class="card">
+        <div class="card-h">
+          <div class="card-t">✅ تسجيل الحضور</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input type="date" id="a-att-date" class="f-input" style="width:155px;padding:7px 10px;font-size:13px" onchange="renderAttGrid()" />
+            <button class="btn btn-g btn-s" onclick="markAll('present')">تحضير الكل</button>
+            <button class="btn btn-o btn-s" onclick="saveAtt()">💾 حفظ</button>
+          </div>
+        </div>
+        <div class="card-b"><div class="att-grid" id="a-att-grid"></div></div>
+      </div>
+    </div>
+
+    <div id="a-requests" class="pg">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="font-size:17px;font-weight:800;color:var(--green)">🔔 طلبات التسجيل</h2>
+        <span class="badge b-ruby" id="req-pending-cnt">0 معلق</span>
+      </div>
+      <div class="card"><div class="card-b" id="a-requests-list"></div></div>
+    </div>
+
+    <div id="a-reports" class="pg">
+      <div class="stats" id="a-rep-stats"></div>
+      <div class="card">
+        <div class="card-h">
+          <div class="card-t">📊 التقرير الشامل</div>
+          <button class="btn btn-o btn-s" onclick="window.print()">🖨 طباعة</button>
+        </div>
+        <div class="card-b" style="padding:0"><div class="tbl-wrap">
+          <table>
+            <thead><tr><th>الطالب</th><th>الحلقة</th><th>المعلم</th><th>النقاط</th><th>الحضور</th><th>واجبات</th><th>تنبيهات غياب</th></tr></thead>
+            <tbody id="a-rep-tbody"></tbody>
+          </table>
+        </div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ TEACHER SCREEN ═══ -->
+<div id="s-teacher" class="scr">
+  <div class="topbar dark">
+    <div class="tb-logo">ق</div>
+    <div>
+      <div class="tb-title" id="t-name-bar">معلم <span class="sync-dot" id="sync-dot-t"></span></div>
+      <div class="tb-sub">لوحة المعلم</div>
+    </div>
+    <div class="tb-tabs">
+      <button class="tb-tab on" onclick="tTab('overview')">الرئيسية</button>
+      <button class="tb-tab" onclick="tTab('mystudents')">طلابي</button>
+      <button class="tb-tab" onclick="tTab('homework')">الواجبات</button>
+      <button class="tb-tab" onclick="tTab('attendance')">الحضور</button>
+    </div>
+    <button class="btn-out" onclick="doLogout()">خروج</button>
+  </div>
+  <div class="mob-nav">
+    <button class="on" onclick="tTab('overview')"><span>🏠</span><span>الرئيسية</span></button>
+    <button onclick="tTab('mystudents')"><span>👥</span><span>طلابي</span></button>
+    <button onclick="tTab('homework')"><span>📋</span><span>الواجبات</span></button>
+    <button onclick="tTab('attendance')"><span>✅</span><span>الحضور</span></button>
+  </div>
+  <div class="body">
+
+    <div id="t-overview" class="pg on">
+      <div class="greeting anim">
+        <div class="greeting-orn">﴿</div>
+        <div><h2 id="t-greeting">مرحباً</h2><p id="t-date-sub">—</p></div>
+      </div>
+      <div class="stats anim2" id="t-stats"></div>
+      <div class="card anim3">
+        <div class="card-h"><div class="card-t">⚠️ طلاب غائبون</div></div>
+        <div class="card-b" id="t-abs-list"></div>
+      </div>
+    </div>
+
+    <div id="t-mystudents" class="pg">
+      <div class="card">
+        <div class="card-h"><div class="card-t">👥 طلابي</div></div>
+        <div class="card-b" style="padding:0"><div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>الطالب</th><th>الحلقة</th><th>النقاط</th><th>الحضور</th><th>تواصل</th></tr></thead>
+            <tbody id="t-students-tbody"></tbody>
+          </table>
+        </div></div>
+      </div>
+    </div>
+
+    <div id="t-homework" class="pg">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="font-size:17px;font-weight:800;color:var(--green)">📋 الواجبات والملاحظات</h2>
+        <button class="btn btn-gold btn-s" onclick="showM('m-add-hw')">+ إضافة</button>
+      </div>
+      <div class="card"><div class="card-b" id="t-homework-list"></div></div>
+    </div>
+
+    <div id="t-attendance" class="pg">
+      <div class="card">
+        <div class="card-h">
+          <div class="card-t">✅ الحضور</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <input type="date" id="t-att-date" class="f-input" style="width:155px;padding:7px 10px;font-size:13px" onchange="renderTAttGrid()" />
+            <button class="btn btn-g btn-s" onclick="markAllT('present')">تحضير الكل</button>
+            <button class="btn btn-o btn-s" onclick="saveTAtt()">💾 حفظ</button>
+          </div>
+        </div>
+        <div class="card-b"><div class="att-grid" id="t-att-grid"></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ STUDENT SCREEN ═══ -->
+<div id="s-student" class="scr">
+  <div class="topbar green">
+    <div class="tb-logo">ق</div>
+    <div>
+      <div class="tb-title" id="st-name-bar">طالب</div>
+      <div class="tb-sub" id="st-group-bar">—</div>
+    </div>
+    <div class="pts-badge" id="st-pts-bar">⭐ 0</div>
+    <button class="btn-out" onclick="doLogout()">خروج</button>
+  </div>
+  <div class="body" style="max-width:700px">
+    <div class="orn">﴾ وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا ﴿</div>
+
+    <!-- واجباتي -->
+    <div class="portal-card anim">
+      <div class="portal-card-h"><h3>📋 واجباتي</h3></div>
+      <div class="portal-card-b" id="st-homework"></div>
+    </div>
+
+    <!-- ملاحظات المعلم -->
+    <div class="portal-card anim2">
+      <div class="portal-card-h"><h3>💬 ملاحظات المعلم</h3></div>
+      <div class="portal-card-b" id="st-notes"></div>
+    </div>
+
+    <!-- تنبيهات الحفظ -->
+    <div class="portal-card anim3">
+      <div class="portal-card-h"><h3>⚠️ تنبيهات الحفظ</h3></div>
+      <div class="portal-card-b" id="st-alerts"></div>
+    </div>
+
+    <!-- حضوري -->
+    <div class="portal-card anim3">
+      <div class="portal-card-h" style="justify-content:space-between;display:flex;align-items:center">
+        <h3>✅ سجل حضوري</h3>
+        <span class="badge b-green" id="st-att-rate">—</span>
+      </div>
+      <div class="portal-card-b" id="st-att-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODALS ═══ -->
+
+<!-- إضافة طالب -->
+<div class="modal-bg off" id="m-add-student">
+  <div class="modal">
+    <h2>إضافة طالب جديد</h2>
+    <div class="f-group"><label class="f-label">الاسم الكامل *</label><input class="f-input" id="m-s-name" placeholder="اسم الطالب" /></div>
+    <div class="f-row">
+      <div class="f-group"><label class="f-label">الحلقة</label><select class="f-sel" id="m-s-halaqa"><option value="">— اختر —</option></select></div>
+      <div class="f-group"><label class="f-label">المعلم المسؤول</label><select class="f-sel" id="m-s-teacher"><option value="">— اختر —</option></select></div>
+    </div>
+    <div class="f-row">
+      <div class="f-group"><label class="f-label">هاتف ولي الأمر</label><input class="f-input" id="m-s-phone" placeholder="07xxxxxxxx" /></div>
+      <div class="f-group"><label class="f-label">كلمة مرور الطالب *</label><input type="password" class="f-input" id="m-s-pass" placeholder="كلمة مرور خاصة" /></div>
+    </div>
+    <div class="f-group"><label class="f-label">آخر ما حفظ</label><input class="f-input" id="m-s-last" placeholder="مثال: البقرة - آية 50" /></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-o btn-s" onclick="hideM('m-add-student')">إلغاء</button>
+      <button class="btn btn-gold" onclick="addStudent()">إضافة ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- تعديل طالب -->
+<div class="modal-bg off" id="m-edit-student">
+  <div class="modal">
+    <h2>تعديل بيانات الطالب</h2>
+    <input type="hidden" id="edit-s-id" />
+    <div class="f-group"><label class="f-label">الاسم</label><input class="f-input" id="edit-s-name" /></div>
+    <div class="f-row">
+      <div class="f-group"><label class="f-label">الحلقة</label><select class="f-sel" id="edit-s-halaqa"></select></div>
+      <div class="f-group"><label class="f-label">المعلم</label><select class="f-sel" id="edit-s-teacher"></select></div>
+    </div>
+    <div class="f-row">
+      <div class="f-group"><label class="f-label">هاتف ولي الأمر</label><input class="f-input" id="edit-s-phone" /></div>
+      <div class="f-group"><label class="f-label">النقاط</label><input type="number" class="f-input" id="edit-s-pts" min="0" /></div>
+    </div>
+    <div class="f-group"><label class="f-label">كلمة مرور جديدة (اتركها فارغة إن لم تريد التغيير)</label><input type="password" class="f-input" id="edit-s-pass" placeholder="اتركها فارغة" /></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-o btn-s" onclick="hideM('m-edit-student')">إلغاء</button>
+      <button class="btn btn-gold" onclick="saveEditStudent()">حفظ التعديلات</button>
+    </div>
+  </div>
+</div>
+
+<!-- إضافة معلم -->
+<div class="modal-bg off" id="m-add-teacher">
+  <div class="modal">
+    <h2>إضافة معلم جديد</h2>
+    <div class="f-group"><label class="f-label">الاسم *</label><input class="f-input" id="m-t-name" placeholder="اسم المعلم" /></div>
+    <div class="f-row">
+      <div class="f-group"><label class="f-label">رقم الهاتف</label><input class="f-input" id="m-t-phone" placeholder="07xxxxxxxx" /></div>
+      <div class="f-group"><label class="f-label">كلمة المرور *</label><input type="password" class="f-input" id="m-t-pass" placeholder="كلمة مرور" /></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-o btn-s" onclick="hideM('m-add-teacher')">إلغاء</button>
+      <button class="btn btn-gold" onclick="addTeacher()">إضافة ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- إضافة حلقة -->
+<div class="modal-bg off" id="m-add-halaqa">
+  <div class="modal">
+    <h2>إضافة حلقة</h2>
+    <div class="f-group"><label class="f-label">اسم الحلقة *</label><input class="f-input" id="m-h-name" placeholder="مثال: حلقة الصباح" /></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+      <button class="btn btn-o btn-s" onclick="hideM('m-add-halaqa')">إلغاء</button>
+      <button class="btn btn-gold" onclick="addHalaqa()">إضافة ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- إضافة واجب / ملاحظة / تنبيه -->
+<div class="modal-bg off" id="m-add-hw">
+  <div class="modal">
+    <h2>إضافة واجب / ملاحظة / تنبيه</h2>
+    <div class="f-group">
+      <label class="f-label">النوع</label>
+      <select class="f-sel" id="hw-type">
+        <option value="homework">📋 واجب حفظ</option>
+        <option value="note">💬 ملاحظة</option>
+        <option value="alert">⚠️ تنبيه حفظ</option>
+      </select>
+    </div>
+    <div class="f-group">
+      <label class="f-label">الطالب</label>
+      <select class="f-sel" id="hw-student"><option value="">— اختر طالب —</option></select>
+    </div>
+    <div class="f-group">
+      <label class="f-label">العنوان</label>
+      <input class="f-input" id="hw-title" placeholder="عنوان مختصر" />
+    </div>
+    <div class="f-group">
+      <label class="f-label">التفاصيل</label>
+      <textarea class="f-ta" id="hw-body" placeholder="اكتب التفاصيل..."></textarea>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button class="btn btn-ai btn-s" onclick="genHWai()">✨ اقتراح AI</button>
+    </div>
+    <div id="hw-ai-box"></div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
+      <button class="btn btn-o btn-s" onclick="hideM('m-add-hw')">إلغاء</button>
+      <button class="btn btn-gold" onclick="addHomework()">إضافة ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ═══ FIREBASE + JS ═══ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore, collection, doc, getDocs, getDoc,
+  setDoc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ── Firebase Config ──
+const firebaseConfig = {
+  apiKey: "AIzaSyDORqQm-sdmTxc7JYzMKw02lhb8myLWIPw",
+  authDomain: "dar-quran-94023.firebaseapp.com",
+  projectId: "dar-quran-94023",
+  storageBucket: "dar-quran-94023.firebasestorage.app",
+  messagingSenderId: "402940847059",
+  appId: "1:402940847059:web:725dba961cf0c91e878526"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── Collections ──
+const COL = {
+  students:   ()=>collection(db,'students'),
+  teachers:   ()=>collection(db,'teachers'),
+  halaqas:    ()=>collection(db,'halaqas'),
+  homework:   ()=>collection(db,'homework'),
+  attendance: ()=>collection(db,'attendance'),
+  requests:   ()=>collection(db,'requests'),
+};
+
+// ── Hardcoded Supervisors ──
+const SUPERVISORS = [
+  {id:'sup1', name:'الشيخ قتيبة ربابعة',  pass:'darj123'},
+  {id:'sup2', name:'الشيخ معاوية ربابعة', pass:'darj123'},
+];
+
+// ── Local Cache (updated by listeners) ──
+let students=[], teachers=[], halaqas=[], homework=[], attendance={}, requests=[];
+let currentUser=null, currentRole=null, loginRoleMode='student';
+
+// ── Sync indicator ──
+function setSyncDot(id, ok){
+  const el=document.getElementById(id);
+  if(el){ el.className='sync-dot'+(ok?'':' off'); }
+}
+
+// ════════════════════════
+// REAL-TIME LISTENERS
+// ════════════════════════
+function startListeners(){
+  // students
+  onSnapshot(COL.students(), snap=>{
+    students=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(currentRole==='admin') { renderStudentsTable(); renderOverviewAdmin(); }
+    if(currentRole==='teacher') { renderTStudents(); renderOverviewTeacher(); }
+    if(currentRole==='student') renderStudentPortal();
+    setSyncDot('sync-dot-a',true); setSyncDot('sync-dot-t',true);
+  });
+  // teachers
+  onSnapshot(COL.teachers(), snap=>{
+    teachers=snap.docs.map(d=>({id:d.id,...d.data()}));
+    populateLoginTeachers();
+    if(currentRole==='admin') renderTeachersList();
+  });
+  // halaqas
+  onSnapshot(COL.halaqas(), snap=>{
+    halaqas=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(currentRole==='admin') renderHalaqasList();
+  });
+  // homework
+  onSnapshot(query(COL.homework(), orderBy('ts','desc')), snap=>{
+    homework=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(currentRole==='admin') { renderHomeworkList('a-homework-list'); renderHWrecent(); }
+    if(currentRole==='teacher') renderHomeworkList('t-homework-list');
+    if(currentRole==='student') renderStudentPortal();
+  });
+  // requests
+  onSnapshot(query(COL.requests(), orderBy('ts','desc')), snap=>{
+    requests=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(currentRole==='admin'){ renderRequestsBadge(); if(document.getElementById('a-requests')?.classList.contains('on')) renderRequestsList(); }
+  });
+  // attendance
+  onSnapshot(COL.attendance(), snap=>{
+    attendance={};
+    snap.docs.forEach(d=>{ attendance[d.id]=d.data(); });
+    if(currentRole==='admin') renderAttGrid();
+    if(currentRole==='teacher') renderTAttGrid();
+    if(currentRole==='student') renderStudentPortal();
+  });
+}
+
+// ════════════════════════
+// LOGIN
+// ════════════════════════
+window.setRole = function(r){
+  loginRoleMode=r;
+  ['admin','teacher','student'].forEach(x=>{
+    document.getElementById('lf-'+x).style.display=x===r?'block':'none';
+  });
+  document.querySelectorAll('.rtab').forEach((t,i)=>{
+    t.classList.toggle('on',['admin','teacher','student'][i]===r);
+  });
+};
+
+window.doLogin = async function(){
+  const err=document.getElementById('login-err');
+  err.style.display='none';
+  const showErr=msg=>{err.textContent=msg;err.style.display='block';};
+
+  if(loginRoleMode==='admin'){
+    const sid=document.getElementById('l-admin-sel').value;
+    const pass=document.getElementById('l-admin-pass').value;
+    if(!sid) return showErr('اختر اسمك');
+    const sup=SUPERVISORS.find(x=>x.id===sid);
+    if(!sup||sup.pass!==pass) return showErr('كلمة المرور غلط');
+    currentUser=sup; currentRole='admin';
+    showAdminScreen();
+  } else if(loginRoleMode==='teacher'){
+    const tid=document.getElementById('l-teacher-sel').value;
+    const pass=document.getElementById('l-teacher-pass').value;
+    if(!tid) return showErr('اختر اسمك');
+    const t=teachers.find(x=>x.id===tid);
+    if(!t||t.pass!==pass) return showErr('كلمة المرور غلط');
+    currentUser=t; currentRole='teacher';
+    showTeacherScreen();
+  } else {
+    const name=document.getElementById('l-student-name').value.trim();
+    const pass=document.getElementById('l-student-pass').value;
+    if(!name) return showErr('أدخل اسمك');
+    if(!pass) return showErr('أدخل كلمة المرور');
+    const s=students.find(x=>x.name===name && x.status==='approved');
+    if(!s) return showErr('الاسم غير موجود أو لم يتم قبول حسابك بعد');
+    if(s.pass!==pass) return showErr('كلمة المرور غلط');
+    currentUser=s; currentRole='student';
+    showStudentScreen();
+  }
+};
+
+window.doLogout = function(){
+  currentUser=null; currentRole=null;
+  showScr('login');
+  document.getElementById('l-admin-pass').value='';
+  document.getElementById('l-teacher-pass').value='';
+  document.getElementById('l-student-pass').value='';
+};
+
+// ════════════════════════
+// SCREENS
+// ════════════════════════
+function showScr(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+}
+
+function showAdminScreen(){
+  showScr('admin');
+  const hr=new Date().getHours();
+  const gr=hr<12?'صباح الخير 🌅':hr<17?'مساء الخير 🌤':'مساء النور 🌙';
+  document.getElementById('admin-greeting').textContent=gr+' — '+currentUser.name;
+  document.getElementById('admin-date-sub').textContent=fmtDate(today())+' · '+students.length+' طالب';
+  document.getElementById('a-att-date').value=today();
+  aTab('overview');
+}
+
+function showTeacherScreen(){
+  showScr('teacher');
+  document.getElementById('t-name-bar').innerHTML=currentUser.name+' <span class="sync-dot" id="sync-dot-t"></span>';
+  const hr=new Date().getHours();
+  const gr=hr<12?'صباح الخير':'مساء الخير';
+  document.getElementById('t-greeting').textContent=gr+' — '+currentUser.name;
+  document.getElementById('t-date-sub').textContent=fmtDate(today());
+  document.getElementById('t-att-date').value=today();
+  tTab('overview');
+}
+
+function showStudentScreen(){
+  showScr('student');
+  const s=students.find(x=>x.id===currentUser.id)||currentUser;
+  document.getElementById('st-name-bar').textContent=s.name;
+  const h=halaqas.find(x=>x.id===s.halaqa);
+  document.getElementById('st-group-bar').textContent=h?.name||'—';
+  document.getElementById('st-pts-bar').textContent='⭐ '+(s.pts||0)+' نقطة';
+  renderStudentPortal();
+}
+
+// ════════════════════════
+// ADMIN TABS
+// ════════════════════════
+window.aTab = function(name){
+  document.querySelectorAll('#s-admin .pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('#s-admin .tb-tab').forEach((t,i)=>
+    t.classList.toggle('on',['overview','students','teachers','halaqas','homework','attendance','reports','requests'][i]===name));
+  document.querySelectorAll('#s-admin .mob-nav button').forEach((b,i)=>
+    b.classList.toggle('on',['overview','students','teachers','halaqas','homework','attendance','reports','requests'][i]===name));
+  document.getElementById('a-'+name).classList.add('on');
+  if(name==='overview') renderOverviewAdmin();
+  if(name==='students') renderStudentsTable();
+  if(name==='teachers') renderTeachersList();
+  if(name==='halaqas') renderHalaqasList();
+  if(name==='homework') renderHomeworkList('a-homework-list');
+  if(name==='attendance') renderAttGrid();
+  if(name==='reports') renderReports();
+  if(name==='requests') renderRequestsList();
+  populateHWstudentSel();
+};
+
+// ════════════════════════
+// TEACHER TABS
+// ════════════════════════
+window.tTab = function(name){
+  document.querySelectorAll('#s-teacher .pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('#s-teacher .tb-tab').forEach((t,i)=>
+    t.classList.toggle('on',['overview','mystudents','homework','attendance'][i]===name));
+  document.querySelectorAll('#s-teacher .mob-nav button').forEach((b,i)=>
+    b.classList.toggle('on',['overview','mystudents','homework','attendance'][i]===name));
+  document.getElementById('t-'+name).classList.add('on');
+  if(name==='overview') renderOverviewTeacher();
+  if(name==='mystudents') renderTStudents();
+  if(name==='homework') renderHomeworkList('t-homework-list');
+  if(name==='attendance') renderTAttGrid();
+  populateHWstudentSel();
+};
+
+// ════════════════════════
+// OVERVIEW ADMIN
+// ════════════════════════
+function renderOverviewAdmin(){
+  const td=today();
+  const tdAtt=attendance[td]||{};
+  const present=Object.values(tdAtt).filter(v=>v==='present').length;
+  const absent=Object.values(tdAtt).filter(v=>v==='absent').length;
+
+  document.getElementById('a-stats').innerHTML=`
+    <div class="stat"><div class="stat-n">${students.length}</div><div class="stat-l">إجمالي الطلاب</div></div>
+    <div class="stat"><div class="stat-n">${teachers.length}</div><div class="stat-l">المعلمون</div></div>
+    <div class="stat"><div class="stat-n">${present}</div><div class="stat-l">حاضر اليوم</div></div>
+    <div class="stat ruby"><div class="stat-n">${absent}</div><div class="stat-l">غائب اليوم</div></div>
+    <div class="stat gold"><div class="stat-n">${homework.length}</div><div class="stat-l">إجمالي الواجبات</div></div>
+  `;
+
+  const absStudents=students.filter(s=>consecutiveAbsent(s.id)>=3);
+  document.getElementById('a-abs-cnt').textContent=absStudents.length+' تنبيه';
+  document.getElementById('a-abs-list').innerHTML=absStudents.length
+    ? absStudents.map(s=>{
+        const cnt=consecutiveAbsent(s.id);
+        const msg=`السلام عليكم، الطالب ${s.name} غائب منذ ${cnt} أيام.`;
+        return`<div class="abs-alert">
+          <div style="font-size:22px">⚠️</div>
+          <div style="flex:1"><h4>${s.name} — ${cnt} أيام</h4><p>${s.phone||'لا يوجد رقم'}</p></div>
+          ${s.phone?`<a href="${waLink(s.phone,msg)}" target="_blank" class="btn btn-wa btn-s">واتساب</a>`:''}
+        </div>`;
+      }).join('')
+    : empty('✅','لا توجد تنبيهات غياب اليوم');
+
+  renderHWrecent();
+}
+
+function renderHWrecent(){
+  document.getElementById('a-hw-recent').innerHTML=homework.slice(0,5).map(hw=>{
+    const st=students.find(x=>x.id===hw.studentId);
+    return`<div class="li">
+      <div class="av av-sm">${initials(st?.name||'؟')}</div>
+      <div class="li-info"><h4>${hw.title}</h4><p>${st?.name||'—'} · ${fmtDate(hw.date)}</p></div>
+      <div class="li-end"><span class="badge ${hwBadge(hw.type)}">${hwLabel(hw.type)}</span></div>
+    </div>`;
+  }).join('')||empty('📋','لا توجد واجبات بعد');
+}
+
+// ════════════════════════
+// OVERVIEW TEACHER
+// ════════════════════════
+function renderOverviewTeacher(){
+  const mine=myStudents();
+  const td=today();
+  const tdAtt=attendance[td]||{};
+  const present=mine.filter(s=>tdAtt[s.id]==='present').length;
+  const myHW=homework.filter(hw=>mine.find(s=>s.id===hw.studentId));
+
+  document.getElementById('t-stats').innerHTML=`
+    <div class="stat"><div class="stat-n">${mine.length}</div><div class="stat-l">طلابي</div></div>
+    <div class="stat"><div class="stat-n">${present}</div><div class="stat-l">حاضر اليوم</div></div>
+    <div class="stat gold"><div class="stat-n">${myHW.length}</div><div class="stat-l">الواجبات</div></div>
+  `;
+
+  const absStudents=mine.filter(s=>consecutiveAbsent(s.id)>=3);
+  document.getElementById('t-abs-list').innerHTML=absStudents.length
+    ? absStudents.map(s=>{
+        const cnt=consecutiveAbsent(s.id);
+        const msg=`السلام عليكم، الطالب ${s.name} غائب منذ ${cnt} أيام.`;
+        return`<div class="abs-alert">
+          <div style="font-size:22px">⚠️</div>
+          <div style="flex:1"><h4>${s.name} — ${cnt} أيام</h4></div>
+          ${s.phone?`<a href="${waLink(s.phone,msg)}" target="_blank" class="btn btn-wa btn-s">واتساب</a>`:''}
+        </div>`;
+      }).join('')
+    : empty('✅','لا توجد تنبيهات غياب');
+}
+
+// ════════════════════════
+// STUDENTS TABLE
+// ════════════════════════
+function renderStudentsTable(){
+  const q=(document.getElementById('s-search')?.value||'').trim();
+  const filtered=students.filter(s=>!q||s.name.includes(q));
+  // refresh modal selects
+  const ho=halaqas.map(h=>`<option value="${h.id}">${h.name}</option>`).join('');
+  const to=teachers.map(t=>`<option value="${t.id}">${t.name}</option>`).join('');
+  if(document.getElementById('m-s-halaqa')) document.getElementById('m-s-halaqa').innerHTML='<option value="">— اختر —</option>'+ho;
+  if(document.getElementById('m-s-teacher')) document.getElementById('m-s-teacher').innerHTML='<option value="">— اختر —</option>'+to;
+
+  document.getElementById('a-students-tbody').innerHTML=filtered.map((s,i)=>{
+    const h=halaqas.find(x=>x.id===s.halaqa);
+    const t=teachers.find(x=>x.id===s.teacherId);
+    const rate=attRate(s.id);
+    const msg=`السلام عليكم، نود إعلامكم بتقدم الطالب ${s.name}.`;
+    return`<tr>
+      <td>${i+1}</td>
+      <td><div style="display:flex;align-items:center;gap:8px"><div class="av av-sm">${initials(s.name)}</div><strong>${s.name}</strong></div></td>
+      <td><span class="badge b-gray">${h?.name||'—'}</span></td>
+      <td>${t?.name||'—'}</td>
+      <td><span class="pts-badge">⭐ ${s.pts||0}</span></td>
+      <td>
+        <span style="font-weight:700;color:${rate>=80?'var(--green)':'var(--ruby)'}">${rate}%</span>
+        <div class="prog"><div class="prog-f" style="width:${rate}%"></div></div>
+      </td>
+      <td>${s.phone?`<a href="${waLink(s.phone,msg)}" target="_blank" class="btn btn-wa btn-s" style="font-size:11px">📱</a>`:'—'}</td>
+      <td style="display:flex;gap:4px">
+        <button class="btn btn-o btn-s" onclick="openEditStudent('${s.id}')">تعديل</button>
+        <button class="btn btn-r btn-s" onclick="delStudent('${s.id}')">حذف</button>
+      </td>
+    </tr>`;
+  }).join('')||'<tr><td colspan="8" style="text-align:center;color:var(--ink4);padding:24px">لا يوجد طلاب</td></tr>';
+}
+
+function renderTStudents(){
+  const mine=myStudents();
+  document.getElementById('t-students-tbody').innerHTML=mine.map((s,i)=>{
+    const h=halaqas.find(x=>x.id===s.halaqa);
+    const rate=attRate(s.id);
+    const msg=`السلام عليكم، نود إعلامكم بتقدم الطالب ${s.name}.`;
+    return`<tr>
+      <td>${i+1}</td>
+      <td><div style="display:flex;align-items:center;gap:8px"><div class="av av-sm">${initials(s.name)}</div><strong>${s.name}</strong></div></td>
+      <td>${h?.name||'—'}</td>
+      <td><span class="pts-badge">⭐ ${s.pts||0}</span></td>
+      <td><span style="font-weight:700;color:${rate>=80?'var(--green)':'var(--ruby)'}">${rate}%</span></td>
+      <td>${s.phone?`<a href="${waLink(s.phone,msg)}" target="_blank" class="btn btn-wa btn-s" style="font-size:11px">📱</a>`:'—'}</td>
+    </tr>`;
+  }).join('')||'<tr><td colspan="6" style="text-align:center;color:var(--ink4);padding:24px">لا يوجد طلاب مسجلون لك</td></tr>';
+}
+
+// ════════════════════════
+// ADD / EDIT / DELETE STUDENT
+// ════════════════════════
+window.addStudent = async function(){
+  const name=document.getElementById('m-s-name').value.trim();
+  const pass=document.getElementById('m-s-pass').value;
+  if(!name) return toast('❗ أدخل الاسم');
+  if(!pass) return toast('❗ أدخل كلمة مرور الطالب');
+  await addDoc(COL.students(),{
+    name,
+    halaqa: document.getElementById('m-s-halaqa').value,
+    teacherId: document.getElementById('m-s-teacher').value,
+    phone: document.getElementById('m-s-phone').value,
+    lastMemorized: document.getElementById('m-s-last').value,
+    pass, pts:0,
+    createdAt: Date.now()
+  });
+  hideM('m-add-student');
+  ['m-s-name','m-s-phone','m-s-last','m-s-pass'].forEach(id=>document.getElementById(id).value='');
+  toast('✅ تمت إضافة الطالب: '+name);
+};
+
+window.openEditStudent = function(id){
+  const s=students.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('edit-s-id').value=id;
+  document.getElementById('edit-s-name').value=s.name;
+  document.getElementById('edit-s-phone').value=s.phone||'';
+  document.getElementById('edit-s-pts').value=s.pts||0;
+  document.getElementById('edit-s-pass').value='';
+  const ho=halaqas.map(h=>`<option value="${h.id}" ${h.id===s.halaqa?'selected':''}>${h.name}</option>`).join('');
+  document.getElementById('edit-s-halaqa').innerHTML='<option value="">—</option>'+ho;
+  const to=teachers.map(t=>`<option value="${t.id}" ${t.id===s.teacherId?'selected':''}>${t.name}</option>`).join('');
+  document.getElementById('edit-s-teacher').innerHTML='<option value="">—</option>'+to;
+  showM('m-edit-student');
+};
+
+window.saveEditStudent = async function(){
+  const id=document.getElementById('edit-s-id').value;
+  const upd={
+    name: document.getElementById('edit-s-name').value.trim(),
+    phone: document.getElementById('edit-s-phone').value,
+    halaqa: document.getElementById('edit-s-halaqa').value,
+    teacherId: document.getElementById('edit-s-teacher').value,
+    pts: parseInt(document.getElementById('edit-s-pts').value)||0,
+  };
+  const newPass=document.getElementById('edit-s-pass').value;
+  if(newPass) upd.pass=newPass;
+  await updateDoc(doc(db,'students',id), upd);
+  hideM('m-edit-student');
+  toast('✅ تم تحديث البيانات');
+};
+
+window.delStudent = async function(id){
+  const s=students.find(x=>x.id===id);
+  if(!confirm('حذف '+s?.name+'؟')) return;
+  await deleteDoc(doc(db,'students',id));
+  toast('🗑 تم الحذف');
+};
+
+// ════════════════════════
+// TEACHERS
+// ════════════════════════
+function renderTeachersList(){
+  document.getElementById('a-teachers-list').innerHTML=teachers.length
+    ? teachers.map(t=>`<div class="li">
+        <div class="av av-md">${initials(t.name)}</div>
+        <div class="li-info"><h4>${t.name}</h4><p>${t.phone||'لا يوجد رقم'}</p></div>
+        <div class="li-end">
+          ${t.phone?`<a href="${waLink(t.phone,'السلام عليكم')}" target="_blank" class="btn btn-wa btn-s">واتساب</a>`:''}
+          <button class="btn btn-r btn-s" onclick="delTeacher('${t.id}')">حذف</button>
+        </div>
+      </div>`).join('')
+    : empty('👨‍🏫','لا يوجد معلمون');
+}
+
+window.addTeacher = async function(){
+  const name=document.getElementById('m-t-name').value.trim();
+  const pass=document.getElementById('m-t-pass').value;
+  if(!name||!pass) return toast('❗ أدخل الاسم وكلمة المرور');
+  await addDoc(COL.teachers(),{name, phone:document.getElementById('m-t-phone').value, pass});
+  hideM('m-add-teacher');
+  ['m-t-name','m-t-phone','m-t-pass'].forEach(id=>document.getElementById(id).value='');
+  toast('✅ تمت الإضافة');
+};
+
+window.delTeacher = async function(id){
+  if(!confirm('حذف المعلم؟')) return;
+  await deleteDoc(doc(db,'teachers',id));
+  toast('🗑 تم الحذف');
+};
+
+// ════════════════════════
+// HALAQAS
+// ════════════════════════
+function renderHalaqasList(){
+  document.getElementById('a-halaqas-list').innerHTML=halaqas.length
+    ? halaqas.map(h=>{
+        const cnt=students.filter(s=>s.halaqa===h.id).length;
+        return`<div class="li">
+          <div class="av av-md" style="background:var(--gold2)">📚</div>
+          <div class="li-info"><h4>${h.name}</h4><p>${cnt} طالب</p></div>
+          <div class="li-end"><button class="btn btn-r btn-s" onclick="delHalaqa('${h.id}')">حذف</button></div>
+        </div>`;
+      }).join('')
+    : empty('📚','لا توجد حلقات');
+}
+
+window.addHalaqa = async function(){
+  const name=document.getElementById('m-h-name').value.trim();
+  if(!name) return toast('❗ أدخل الاسم');
+  await addDoc(COL.halaqas(),{name});
+  hideM('m-add-halaqa');
+  document.getElementById('m-h-name').value='';
+  toast('✅ تمت الإضافة');
+};
+
+window.delHalaqa = async function(id){
+  if(!confirm('حذف الحلقة؟')) return;
+  await deleteDoc(doc(db,'halaqas',id));
+  toast('🗑 تم الحذف');
+};
+
+// ════════════════════════
+// HOMEWORK / NOTES / ALERTS
+// ════════════════════════
+function populateHWstudentSel(){
+  const mine = currentRole==='teacher' ? myStudents() : students;
+  const sel=document.getElementById('hw-student');
+  if(sel) sel.innerHTML='<option value="">— اختر طالب —</option>'+
+    mine.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+}
+
+function renderHomeworkList(elId){
+  const mine = currentRole==='teacher' ? myStudents() : students;
+  const myHW = homework.filter(hw=>mine.find(s=>s.id===hw.studentId));
+  const el=document.getElementById(elId);
+  if(!el) return;
+  el.innerHTML=myHW.length
+    ? myHW.map(hw=>{
+        const st=students.find(x=>x.id===hw.studentId);
+        return`<div style="padding:12px 0;border-bottom:1px solid var(--border2)">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span class="badge ${hwBadge(hw.type)}">${hwLabel(hw.type)}</span>
+            <strong style="font-size:14px">${hw.title}</strong>
+            <span style="margin-right:auto;font-size:12px;color:var(--ink3)">${st?.name||'—'} · ${fmtDate(hw.date)}</span>
+            <button class="btn btn-r btn-s" onclick="delHW('${hw.id}')">حذف</button>
+          </div>
+          <p style="font-size:13px;color:var(--ink2);line-height:1.7">${hw.body}</p>
+        </div>`;
+      }).join('')
+    : empty('📋','لا توجد واجبات أو ملاحظات');
+}
+
+window.addHomework = async function(){
+  const studentId=document.getElementById('hw-student').value;
+  const title=document.getElementById('hw-title').value.trim();
+  const body=document.getElementById('hw-body').value.trim();
+  if(!studentId) return toast('❗ اختر طالباً');
+  if(!title||!body) return toast('❗ أدخل العنوان والتفاصيل');
+  await addDoc(COL.homework(),{
+    studentId, title, body,
+    type: document.getElementById('hw-type').value,
+    authorId: currentUser.id,
+    authorName: currentUser.name,
+    date: today(),
+    ts: Date.now()
+  });
+  hideM('m-add-hw');
+  ['hw-title','hw-body'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('hw-ai-box').innerHTML='';
+  toast('✅ تمت الإضافة');
+};
+
+window.delHW = async function(id){
+  if(!confirm('حذف هذا العنصر؟')) return;
+  await deleteDoc(doc(db,'homework',id));
+  toast('🗑 تم الحذف');
+};
+
+// ════════════════════════
+// ATTENDANCE
+// ════════════════════════
+window.renderAttGrid = function(){
+  const d=document.getElementById('a-att-date')?.value||today();
+  if(document.getElementById('a-att-date')) document.getElementById('a-att-date').value=d;
+  const att=attendance[d]||{};
+  document.getElementById('a-att-grid').innerHTML=students.map(s=>`
+    <div class="att-card">
+      <div class="av av-sm">${initials(s.name)}</div>
+      <div class="att-name">${s.name}<small>${halaqas.find(h=>h.id===s.halaqa)?.name||'—'}</small></div>
+      <div class="att-btns">
+        <button id="ap_${s.id}" class="${att[s.id]==='present'?'pr':''}" onclick="toggleAtt('${s.id}','present','a')">✓</button>
+        <button id="aa_${s.id}" class="${att[s.id]==='absent'?'ab':''}" onclick="toggleAtt('${s.id}','absent','a')">✗</button>
+      </div>
+    </div>`).join('');
+};
+
+window.renderTAttGrid = function(){
+  const d=document.getElementById('t-att-date')?.value||today();
+  if(document.getElementById('t-att-date')) document.getElementById('t-att-date').value=d;
+  const att=attendance[d]||{};
+  const mine=myStudents();
+  document.getElementById('t-att-grid').innerHTML=mine.map(s=>`
+    <div class="att-card">
+      <div class="av av-sm">${initials(s.name)}</div>
+      <div class="att-name">${s.name}<small>${halaqas.find(h=>h.id===s.halaqa)?.name||'—'}</small></div>
+      <div class="att-btns">
+        <button id="tp_${s.id}" class="${att[s.id]==='present'?'pr':''}" onclick="toggleAtt('${s.id}','present','t')">✓</button>
+        <button id="ta_${s.id}" class="${att[s.id]==='absent'?'ab':''}" onclick="toggleAtt('${s.id}','absent','t')">✗</button>
+      </div>
+    </div>`).join('');
+};
+
+let pendingAtt={};
+
+window.toggleAtt = function(sid,status,prefix){
+  const d=(prefix==='a'?document.getElementById('a-att-date'):document.getElementById('t-att-date')).value;
+  if(!pendingAtt[d]) pendingAtt[d]={};
+  pendingAtt[d][sid]=status;
+  document.getElementById((prefix==='a'?'ap_':'tp_')+sid).className=status==='present'?'pr':'';
+  document.getElementById((prefix==='a'?'aa_':'ta_')+sid).className=status==='absent'?'ab':'';
+};
+
+window.saveAtt = async function(){
+  const d=document.getElementById('a-att-date').value;
+  if(!pendingAtt[d]) return toast('لم تسجّل أي حضور');
+  const existing=attendance[d]||{};
+  await setDoc(doc(db,'attendance',d),{...existing,...pendingAtt[d]});
+  pendingAtt={};
+  toast('✅ تم حفظ الحضور');
+};
+
+window.saveTAtt = async function(){
+  const d=document.getElementById('t-att-date').value;
+  if(!pendingAtt[d]) return toast('لم تسجّل أي حضور');
+  const existing=attendance[d]||{};
+  await setDoc(doc(db,'attendance',d),{...existing,...pendingAtt[d]});
+  pendingAtt={};
+  toast('✅ تم حفظ الحضور');
+};
+
+window.markAll = function(status){
+  const d=document.getElementById('a-att-date').value;
+  if(!pendingAtt[d]) pendingAtt[d]={};
+  students.forEach(s=>{
+    pendingAtt[d][s.id]=status;
+    const p=document.getElementById('ap_'+s.id);
+    const a=document.getElementById('aa_'+s.id);
+    if(p) p.className=status==='present'?'pr':'';
+    if(a) a.className=status==='absent'?'ab':'';
+  });
+};
+
+window.markAllT = function(status){
+  const d=document.getElementById('t-att-date').value;
+  if(!pendingAtt[d]) pendingAtt[d]={};
+  myStudents().forEach(s=>{
+    pendingAtt[d][s.id]=status;
+    const p=document.getElementById('tp_'+s.id);
+    const a=document.getElementById('ta_'+s.id);
+    if(p) p.className=status==='present'?'pr':'';
+    if(a) a.className=status==='absent'?'ab':'';
+  });
+};
+
+// ════════════════════════
+// STUDENT PORTAL
+// ════════════════════════
+function renderStudentPortal(){
+  const s=students.find(x=>x.id===currentUser.id);
+  if(!s) return;
+
+  // update pts live
+  document.getElementById('st-pts-bar').textContent='⭐ '+(s.pts||0)+' نقطة';
+
+  const myHW=homework.filter(hw=>hw.studentId===s.id);
+  const hw=myHW.filter(x=>x.type==='homework');
+  const notes=myHW.filter(x=>x.type==='note');
+  const alerts=myHW.filter(x=>x.type==='alert');
+
+  document.getElementById('st-homework').innerHTML=hw.length
+    ? hw.map(h=>`<div class="homework-item">
+        <h4>${h.title}</h4>
+        <p>${h.body}</p>
+        <div class="meta"><span>📅 ${fmtDate(h.date)}</span><span>👤 ${h.authorName||'—'}</span></div>
+      </div>`).join('')
+    : empty('📋','لا توجد واجبات حالياً');
+
+  document.getElementById('st-notes').innerHTML=notes.length
+    ? notes.map(n=>`<div class="note-item">
+        <p>${n.body}</p>
+        <div class="meta">📅 ${fmtDate(n.date)} · 👤 ${n.authorName||'—'}</div>
+      </div>`).join('')
+    : empty('💬','لا توجد ملاحظات');
+
+  document.getElementById('st-alerts').innerHTML=alerts.length
+    ? alerts.map(a=>`<div class="alert-item">
+        <p><strong>${a.title}:</strong> ${a.body}</p>
+        <div class="meta" style="font-size:11px;color:var(--ink3);margin-top:5px">📅 ${fmtDate(a.date)}</div>
+      </div>`).join('')
+    : empty('✅','لا توجد تنبيهات');
+
+  // Attendance
+  const dates=Object.keys(attendance).sort((a,b)=>b.localeCompare(a)).slice(0,14);
+  const pr=dates.filter(d=>attendance[d]?.[s.id]==='present').length;
+  const rate=dates.length?Math.round(pr/dates.length*100):100;
+  document.getElementById('st-att-rate').textContent=rate+'% حضور';
+  document.getElementById('st-att-list').innerHTML=dates.length
+    ? dates.map(d=>{
+        const st=attendance[d]?.[s.id];
+        return`<div style="display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--border2)">
+          <span style="flex:1;font-size:13px;color:var(--ink3)">${fmtDate(d)}</span>
+          <span style="font-size:13px;font-weight:700;color:${st==='present'?'var(--green)':st==='absent'?'var(--ruby)':'var(--ink4)'}">
+            ${st==='present'?'✅ حاضر':st==='absent'?'❌ غائب':'— غير مسجل'}
+          </span>
+        </div>`;
+      }).join('')
+    : empty('📅','لا توجد سجلات حضور');
+}
+
+// ════════════════════════
+// REPORTS
+// ════════════════════════
+function renderReports(){
+  document.getElementById('a-rep-stats').innerHTML=`
+    <div class="stat"><div class="stat-n">${students.length}</div><div class="stat-l">طلاب</div></div>
+    <div class="stat"><div class="stat-n">${teachers.length}</div><div class="stat-l">معلمون</div></div>
+    <div class="stat gold"><div class="stat-n">${homework.length}</div><div class="stat-l">واجبات وملاحظات</div></div>
+    <div class="stat ruby"><div class="stat-n">${students.filter(s=>consecutiveAbsent(s.id)>=3).length}</div><div class="stat-l">تنبيهات غياب</div></div>
+  `;
+  document.getElementById('a-rep-tbody').innerHTML=students.map(s=>{
+    const h=halaqas.find(x=>x.id===s.halaqa);
+    const t=teachers.find(x=>x.id===s.teacherId);
+    const rate=attRate(s.id);
+    const myHW=homework.filter(x=>x.studentId===s.id);
+    const abs=consecutiveAbsent(s.id);
+    return`<tr>
+      <td><strong>${s.name}</strong></td>
+      <td>${h?.name||'—'}</td>
+      <td>${t?.name||'—'}</td>
+      <td><span class="pts-badge">⭐ ${s.pts||0}</span></td>
+      <td><span style="font-weight:700;color:${rate>=80?'var(--green)':'var(--ruby)'}">${rate}%</span></td>
+      <td>${myHW.length}</td>
+      <td>${abs>=3?`<span class="badge b-ruby">⚠️ ${abs} أيام</span>`:'<span class="badge b-green">طبيعي</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ════════════════════════
+// AI SUGGESTION
+// ════════════════════════
+window.genHWai = async function(){
+  const type=document.getElementById('hw-type').value;
+  const sid=document.getElementById('hw-student').value;
+  const st=students.find(x=>x.id===sid);
+  const box=document.getElementById('hw-ai-box');
+  box.innerHTML='<div style="font-size:13px;color:var(--ink3);padding:8px">⏳ جاري التوليد...</div>';
+  const typeLabel={homework:'واجب حفظ',note:'ملاحظة',alert:'تنبيه حفظ'}[type];
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:200,
+        messages:[{role:'user',content:
+          `اكتب ${typeLabel} قصيرة ومفيدة (3 جمل) ${st?'للطالب "'+st.name+'"':''} في مادة حفظ القرآن الكريم. بالعربية الفصحى مباشرة.`
+        }]
+      })
+    });
+    const data=await res.json();
+    const text=data.content?.map(c=>c.text||'').join('')||'تعذر التوليد';
+    box.innerHTML=`<div class="ai-box">
+      <div class="ai-box-h">✨ مقترح AI <button class="btn btn-g btn-s" onclick="useAI()">استخدام</button></div>
+      <span id="ai-text">${text}</span>
+    </div>`;
+  }catch(e){
+    box.innerHTML='<div style="font-size:12px;color:var(--ruby);padding:8px">⚠️ تعذر الاتصال</div>';
+  }
+};
+
+window.useAI = function(){
+  const t=document.getElementById('ai-text');
+  if(t) document.getElementById('hw-body').value=t.textContent;
+  document.getElementById('hw-ai-box').innerHTML='';
+  toast('✅ تم نقل النص');
+};
+
+// ════════════════════════
+// UTILS
+// ════════════════════════
+function myStudents(){
+  if(!currentUser) return [];
+  return students.filter(s=>s.teacherId===currentUser.id);
+}
+
+function attRate(sid){
+  const dates=Object.keys(attendance);
+  if(!dates.length) return 100;
+  const pr=dates.filter(d=>attendance[d]?.[sid]==='present').length;
+  return Math.round(pr/dates.length*100);
+}
+
+function consecutiveAbsent(sid){
+  const dates=Object.keys(attendance).sort((a,b)=>b.localeCompare(a));
+  let cnt=0;
+  for(const d of dates){
+    if(attendance[d]?.[sid]==='absent') cnt++;
+    else break;
+  }
+  return cnt;
+}
+
+function waLink(phone,msg){
+  const p=phone.replace(/\D/g,'');
+  const num=p.startsWith('0')?'962'+p.slice(1):p;
+  return`https://wa.me/${num}?text=${encodeURIComponent(msg)}`;
+}
+
+function today(){ return new Date().toISOString().split('T')[0]; }
+
+function fmtDate(d){
+  if(!d) return'—';
+  const days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const dt=new Date(d+'T00:00:00');
+  return days[dt.getDay()]+' '+dt.toLocaleDateString('ar-JO',{day:'numeric',month:'short'});
+}
+
+function initials(n){ return(n||'').trim().split(' ').slice(0,2).map(p=>p[0]||'').join(''); }
+
+function hwLabel(t){ return{homework:'📋 واجب',note:'💬 ملاحظة',alert:'⚠️ تنبيه'}[t]||t; }
+function hwBadge(t){ return{homework:'b-sky',note:'b-green',alert:'b-ruby'}[t]||'b-gray'; }
+
+function empty(icon,msg){
+  return`<div style="text-align:center;padding:28px;color:var(--ink4)"><div style="font-size:32px;margin-bottom:8px">${icon}</div><p style="font-size:13px">${msg}</p></div>`;
+}
+
+function toast(msg,dur=3000){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),dur);
+}
+
+window.showM = function(id){ document.getElementById(id).classList.remove('off'); populateHWstudentSel(); };
+window.hideM = function(id){ document.getElementById(id).classList.add('off'); };
+
+// ════════════════════════
+// POPULATE LOGIN SELECTS
+// ════════════════════════
+// ════════════════════════
+// REGISTER
+// ════════════════════════
+window.doRegister = async function(){
+  const err=document.getElementById('reg-err');
+  err.style.display='none';
+  const showErr=msg=>{err.textContent=msg;err.style.display='block';};
+  const name=document.getElementById('reg-name').value.trim();
+  const pass=document.getElementById('reg-pass').value;
+  const pass2=document.getElementById('reg-pass2').value;
+  const phone=document.getElementById('reg-phone').value.trim();
+  if(!name) return showErr('أدخل اسمك الكامل');
+  if(!pass) return showErr('اختر كلمة مرور');
+  if(pass.length<4) return showErr('كلمة المرور قصيرة جداً (4 أحرف على الأقل)');
+  if(pass!==pass2) return showErr('كلمتا المرور غير متطابقتين');
+  // check no duplicate name in pending or approved
+  const exists=students.find(x=>x.name===name);
+  const pending=requests.find(x=>x.name===name && x.status==='pending');
+  if(exists) return showErr('هذا الاسم مسجل مسبقاً، جرّب تسجيل الدخول');
+  if(pending) return showErr('طلبك قيد المراجعة، انتظر موافقة المشرف');
+  await addDoc(COL.requests(),{name,pass,phone,status:'pending',ts:Date.now()});
+  // show success
+  document.querySelector('#s-register .login-wrap').innerHTML=`
+    <div style="text-align:center;padding:20px 0">
+      <div style="font-size:52px;margin-bottom:16px">✅</div>
+      <h2 style="font-size:20px;font-weight:900;color:var(--green);margin-bottom:8px">تم إرسال طلبك!</h2>
+      <p style="font-size:14px;color:var(--ink3);line-height:1.8;margin-bottom:20px">سيتم مراجعة طلبك من قِبل المشرف وستتمكن من الدخول بعد الموافقة.</p>
+      <button class="btn-login" onclick="location.reload()">← رجوع لتسجيل الدخول</button>
+    </div>`;
+};
+
+// ════════════════════════
+// REQUESTS (Admin)
+// ════════════════════════
+function renderRequestsBadge(){
+  const pending=requests.filter(r=>r.status==='pending');
+  const badge=document.getElementById('req-badge');
+  const cnt=document.getElementById('req-pending-cnt');
+  const card=document.getElementById('overview-requests-card');
+  const ovCnt=document.getElementById('ov-req-cnt');
+  if(badge){ badge.textContent=pending.length; badge.style.display=pending.length?'inline':'none'; }
+  if(cnt) cnt.textContent=pending.length+' معلق';
+  if(card){ card.style.display=pending.length?'block':'none'; }
+  if(ovCnt) ovCnt.textContent=pending.length;
+  if(document.getElementById('ov-req-list'))
+    document.getElementById('ov-req-list').innerHTML=pending.slice(0,3).map(r=>`
+      <div class="li">
+        <div class="av av-sm">${initials(r.name)}</div>
+        <div class="li-info"><h4>${r.name}</h4><p>${r.phone||'لا يوجد رقم'} · ${fmtDate(r.ts?new Date(r.ts).toISOString().split('T')[0]:'')}</p></div>
+        <div class="li-end">
+          <button class="btn btn-g btn-s" onclick="approveRequest('${r.id}')">✅ قبول</button>
+          <button class="btn btn-r btn-s" onclick="rejectRequest('${r.id}')">❌ رفض</button>
+        </div>
+      </div>`).join('');
+}
+
+function renderRequestsList(){
+  const el=document.getElementById('a-requests-list');
+  if(!el) return;
+  renderRequestsBadge();
+  if(!requests.length){ el.innerHTML=empty('📭','لا توجد طلبات تسجيل'); return; }
+  el.innerHTML=requests.map(r=>`
+    <div class="li" style="flex-wrap:wrap">
+      <div class="av av-md">${initials(r.name)}</div>
+      <div class="li-info">
+        <h4>${r.name}</h4>
+        <p>${r.phone||'لا يوجد رقم'} · ${fmtDate(r.ts?new Date(r.ts).toISOString().split('T')[0]:'')}</p>
+      </div>
+      <div class="li-end">
+        <span class="badge ${r.status==='pending'?'b-gold':r.status==='approved'?'b-green':'b-ruby'}">
+          ${r.status==='pending'?'⏳ معلق':r.status==='approved'?'✅ مقبول':'❌ مرفوض'}
+        </span>
+        ${r.status==='pending'?`
+          <button class="btn btn-g btn-s" onclick="approveRequest('${r.id}')">✅ قبول</button>
+          <button class="btn btn-r btn-s" onclick="rejectRequest('${r.id}')">❌ رفض</button>
+        `:''}
+      </div>
+    </div>`).join('');
+}
+
+window.approveRequest = async function(id){
+  const r=requests.find(x=>x.id===id);
+  if(!r) return;
+  // add to students collection
+  await addDoc(COL.students(),{
+    name:r.name, pass:r.pass, phone:r.phone||'',
+    halaqa:'', teacherId:'', lastMemorized:'',
+    pts:0, status:'approved', createdAt:Date.now()
+  });
+  // update request status
+  await updateDoc(doc(db,'requests',id),{status:'approved'});
+  toast('✅ تم قبول الطالب: '+r.name);
+};
+
+window.rejectRequest = async function(id){
+  const r=requests.find(x=>x.id===id);
+  if(!r) return;
+  if(!confirm('رفض طلب '+r.name+'؟')) return;
+  await updateDoc(doc(db,'requests',id),{status:'rejected'});
+  toast('❌ تم رفض الطلب');
+};
+
+function populateLoginTeachers(){
+  const sel=document.getElementById('l-teacher-sel');
+  sel.innerHTML='<option value="">— اختر —</option>'+
+    teachers.map(t=>`<option value="${t.id}">${t.name}</option>`).join('');
+}
+
+function populateLoginStudents(){ /* replaced by name input */ }
+
+// ════════════════════════
+// INIT
+// ════════════════════════
+async function init(){
+  setRole('student');
+  startListeners();
+  // hide loading after first data
+  setTimeout(()=>{
+    showScr('login');
+  },1800);
+}
+
+init();
+</script>
+</body>
+</html>
